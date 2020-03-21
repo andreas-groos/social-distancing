@@ -41,6 +41,8 @@ export default function Container({ }: Props): ReactElement {
             processCollisions(persons[i], persons[j])
           }
         }
+        const stats = Person.getStats()
+        console.log('stats', stats)
       }, INTERVAL)
     }
   }, []);

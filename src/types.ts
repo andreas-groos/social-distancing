@@ -19,3 +19,9 @@ export interface IPerson {
   move(): void
   checkStatus(): void
 }
+
+export interface Stats {
+  healthy: number
+  sick: number
+  recovered: number
+}

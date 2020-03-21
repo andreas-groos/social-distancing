@@ -1,4 +1,4 @@
-import { Status, WindowSize, IPerson } from './types'
+import { Status, WindowSize, IPerson, Stats } from './types'
 import { getRandomPosition } from './utils';
 
 const RADIUS = 10
@@ -7,6 +7,7 @@ const HEALING_TIME = 5 * 1000;
 class Person implements IPerson {
   static count = 0
   static window: WindowSize = { height: 0, width: 0 }
+  static members: Status[] = []
   x: number
   y: number
   r: number
@@ -29,6 +30,7 @@ class Person implements IPerson {
     Person.count++
     Person.window.height = height
     Person.window.width = width
+    Person.members[Person.count] = 'HEALTHY'
   }
 
   move() {
@@ -41,6 +43,7 @@ class Person implements IPerson {
   infection() {
     this.status = 'SICK'
     this.infected = new Date().getTime()
+    Person.members[this.key] = 'SICK'
   }
 
   checkStatus() {
@@ -49,6 +52,7 @@ class Person implements IPerson {
       let timeDifference = now - this.infected
       if (timeDifference >= HEALING_TIME) {
         this.status = 'RECOVERED'
+        Person.members[this.key] = 'RECOVERED'
       }
     }
   }
@@ -82,6 +86,30 @@ class Person implements IPerson {
         return '#66CDAA'
       default:
         return 'black'
+    }
+  }
+
+  static getStats(): Stats {
+    let i = 0;
+    let healthy = 0
+    let sick = 0
+    let recovered = 0
+    while (i < this.count) {
+      if (Person.members[i] === 'HEALTHY') {
+        healthy++
+      }
+      if (Person.members[i] === 'SICK') {
+        sick++
+      }
+      if (Person.members[i] === 'RECOVERED') {
+        recovered++
+      }
+      i++
+    }
+    return {
+      healthy,
+      sick,
+      recovered
     }
   }
 }
