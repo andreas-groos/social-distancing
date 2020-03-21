@@ -1,6 +1,9 @@
-import { Status, WindowSize } from './types'
+import { Status, WindowSize, IPerson } from './types'
+import { getRandomPosition } from './utils';
 
-class Person {
+const RADIUS = 10
+
+class Person implements IPerson {
   static count = 0
   static window: WindowSize = { height: 0, width: 0 }
   x: number
@@ -12,9 +15,9 @@ class Person {
   key: number
   status: Status
   constructor(width: number, height: number) {
-    this.x = Math.random() * height
-    this.y = Math.random() * width
-    this.r = 10
+    this.x = getRandomPosition(width, RADIUS)
+    this.y = getRandomPosition(height, RADIUS)
+    this.r = RADIUS
     this.vx = (Math.random() * 2) - 1
     this.vy = (Math.random() * 2) - 1
     this.speed = 1
@@ -32,19 +35,19 @@ class Person {
   }
 
   checkBoundary() {
-    if (this.x < 0 + this.r / 2) {
+    if (this.x < 0 + this.r) {
       this.vx = -this.vx
       return
     }
-    if (this.x > Person.window.width - this.r / 2) {
+    if (this.x > Person.window.width - this.r) {
       this.vx = -this.vx
       return
     }
-    if (this.y < 0 + this.r / 2) {
+    if (this.y < 0 + this.r) {
       this.vy = -this.vy
       return
     }
-    if (this.y > Person.window.height - this.r / 2) {
+    if (this.y > Person.window.height - this.r) {
       this.vy = -this.vy
       return
     }
