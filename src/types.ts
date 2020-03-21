@@ -14,4 +14,8 @@ export interface IPerson {
   speed: number
   key: number
   status: Status
+  infected: number | null
+  infection(): void
+  move(): void
+  checkStatus(): void
 }

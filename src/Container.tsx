@@ -5,7 +5,7 @@ import Person from './Person'
 import { Selection } from 'd3'
 
 const INTERVAL = 10;
-const COUNT = 500
+const COUNT = 300
 
 interface Props {
 
@@ -24,7 +24,7 @@ export default function Container({ }: Props): ReactElement {
       for (let i = 0; i < COUNT; i++) {
         persons.push(new Person(width, height))
       }
-      persons[0].status = 'SICK'
+      persons[0].infection()
       // setPersons(p)
       persons.forEach(p => {
         svg.append('circle').attr('cx', p.x).attr('cy', p.y).attr('r', p.r).attr('fill', p.getColor()).attr('id', `p-${p.key}`)

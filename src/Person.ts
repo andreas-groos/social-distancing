@@ -2,6 +2,7 @@ import { Status, WindowSize, IPerson } from './types'
 import { getRandomPosition } from './utils';
 
 const RADIUS = 10
+const HEALING_TIME = 5 * 1000;
 
 class Person implements IPerson {
   static count = 0
@@ -14,6 +15,7 @@ class Person implements IPerson {
   speed: number
   key: number
   status: Status
+  infected: number | null
   constructor(width: number, height: number) {
     this.x = getRandomPosition(width, RADIUS)
     this.y = getRandomPosition(height, RADIUS)
@@ -23,6 +25,7 @@ class Person implements IPerson {
     this.speed = 1
     this.key = Person.count
     this.status = 'HEALTHY'
+    this.infected = null
     Person.count++
     Person.window.height = height
     Person.window.width = width
@@ -32,6 +35,22 @@ class Person implements IPerson {
     this.x += this.vx * this.speed
     this.y += this.vy * this.speed
     this.checkBoundary()
+    this.checkStatus()
+  }
+
+  infection() {
+    this.status = 'SICK'
+    this.infected = new Date().getTime()
+  }
+
+  checkStatus() {
+    if (this.infected) {
+      const now = new Date().getTime()
+      let timeDifference = now - this.infected
+      if (timeDifference >= HEALING_TIME) {
+        this.status = 'RECOVERED'
+      }
+    }
   }
 
   checkBoundary() {
@@ -56,11 +75,11 @@ class Person implements IPerson {
   getColor() {
     switch (this.status) {
       case 'HEALTHY':
-        return 'blue'
+        return '#6495ED'
       case 'SICK':
-        return 'red'
+        return '#DC143C'
       case 'RECOVERED':
-        return 'green'
+        return '#66CDAA'
       default:
         return 'black'
     }

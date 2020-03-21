@@ -71,9 +71,11 @@ export function processCollisions(person1: IPerson, person2: IPerson) {
     person2.vx = vx2
     person2.vy = vy2
     // Infect!
-    if (person1.status === 'SICK' || person2.status === 'SICK') {
-      person1.status = 'SICK'
-      person2.status = 'SICK'
+    if (person1.status === 'SICK' && person2.status === 'HEALTHY') {
+      person2.infection()
+    }
+    if (person2.status === 'SICK' && person1.status === 'HEALTHY') {
+      person1.infection()
     }
   }
 }
