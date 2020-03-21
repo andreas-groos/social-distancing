@@ -1,4 +1,4 @@
-export interface WindowSize {
+export interface Dimensions {
   height: number
   width: number
 }

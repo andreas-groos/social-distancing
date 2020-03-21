@@ -7,4 +7,23 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.main {
+  height: 80vh;
+  width: 100vw;
+}
+
+.chart,
+.chart-wrapper {
+  height: 20vh;
+  width: 100vw;
+  padding: 1rem;
 }

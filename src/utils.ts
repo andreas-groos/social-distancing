@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { WindowSize, IPerson } from './types';
+import { Dimensions, IPerson } from './types';
 
 
 export function degrees2Radians(degrees: number): number {
@@ -9,7 +9,7 @@ export function degrees2Radians(degrees: number): number {
   return degrees * (Math.PI / 180);
 }
 
-export function useWindowSize(): WindowSize {
+export function useWindowSize(): Dimensions {
   function getSize() {
     return {
       width: window.innerWidth,
@@ -30,11 +30,11 @@ export function useWindowSize(): WindowSize {
 
 export function getRandomPosition(max: number, radius: number): number {
   let r = Math.random() * max
-  if (r <= max + radius) {
-    r += radius
+  if (r <= radius) {
+    r += radius * 1.5
   }
   if (r >= max - radius) {
-    r -= radius
+    r -= radius * 1.5
   }
   return r
 }

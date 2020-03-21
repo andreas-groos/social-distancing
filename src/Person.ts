@@ -1,4 +1,4 @@
-import { Status, WindowSize, IPerson, Stats } from './types'
+import { Status, Dimensions, IPerson, Stats } from './types'
 import { getRandomPosition } from './utils';
 
 const RADIUS = 10
@@ -6,7 +6,7 @@ const HEALING_TIME = 5 * 1000;
 
 class Person implements IPerson {
   static count = 0
-  static window: WindowSize = { height: 0, width: 0 }
+  static window: Dimensions = { height: 0, width: 0 }
   static members: Status[] = []
   x: number
   y: number
