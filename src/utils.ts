@@ -8,7 +8,6 @@ export function degrees2Radians(degrees: number): number {
   return degrees * (Math.PI / 180);
 }
 
-
 export function useWindowSize(): WindowSize {
   function getSize() {
     return {
