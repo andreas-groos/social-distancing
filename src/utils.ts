@@ -31,10 +31,10 @@ export function useWindowSize(): Dimensions {
 export function getRandomPosition(max: number, radius: number): number {
   let r = Math.random() * max
   if (r <= radius) {
-    r += radius * 1.5
+    r += radius * 4
   }
   if (r >= max - radius) {
-    r -= radius * 1.5
+    r -= radius * 4
   }
   return r
 }
@@ -44,7 +44,7 @@ export function checkCollision(person1: IPerson, person2: IPerson): boolean {
   const dx = Math.abs(person2.x - person1.x)
   const dy = Math.abs(person2.y - person1.y)
   const d = Math.sqrt(dx * dx + dy * dy)
-  return (d < person1.r + person2.r) ? true : false
+  return (d <= person1.r + person2.r) ? true : false
 
 }
 

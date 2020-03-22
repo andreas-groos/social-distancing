@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, ReactElement } from 'react'
-import Chart from './Chart'
+import StatsComponent from './Stats'
 import { select } from 'd3'
 import { processCollisions } from './utils';
 import Person from './Person'
@@ -7,7 +7,6 @@ import { Selection } from 'd3'
 import { Dimensions, Stats } from './types'
 
 const INTERVAL = 10;
-const COUNT = 300
 
 interface Props {
 
@@ -16,16 +15,18 @@ interface Props {
 export default function Container({ }: Props): ReactElement {
   const d3svg = useRef<SVGSVGElement>(null)
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 })
-  const [healthStats, setHealthStats] = useState<Stats>({ healthy: COUNT, sick: 0, recovered: 0 })
+  const [healthStats, setHealthStats] = useState<Stats>({ healthy: 0, sick: 0, recovered: 0 })
   const [persons, setPersons] = useState<Person[] | []>([])
 
   useEffect(() => {
     if (d3svg && d3svg.current) {
       const { height, width } = d3svg.current.getBoundingClientRect()
+      const COUNT = height * width / 3000
+      setHealthStats({ healthy: COUNT, sick: 0, recovered: 0 })
       setDimensions({ height, width })
       let svg = select(d3svg.current);
       const persons = [] as Person[]
-      for (let i = 0; i < COUNT; i++) {
+      for (let i = 0; i < (COUNT); i++) {
         persons.push(new Person(width, height))
       }
       persons[0].infection()
@@ -61,7 +62,7 @@ export default function Container({ }: Props): ReactElement {
         role="img"
         ref={d3svg}
       ></svg>
-      <Chart stats={healthStats} persons={persons} />
+      <StatsComponent stats={healthStats} />
     </div >
   )
 }

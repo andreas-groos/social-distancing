@@ -47,10 +47,12 @@ class Person implements IPerson {
   }
 
   checkStatus() {
+    // console.log(Person.members)
     if (this.infected) {
       const now = new Date().getTime()
       let timeDifference = now - this.infected
       if (timeDifference >= HEALING_TIME) {
+        this.infected = null
         this.status = 'RECOVERED'
         Person.members[this.key] = 'RECOVERED'
       }
