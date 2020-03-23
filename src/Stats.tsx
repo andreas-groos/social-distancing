@@ -6,7 +6,6 @@ interface Props {
 }
 
 export default function StatsComponent({ stats }: Props): ReactElement {
-  console.log('stats', stats)
   return (
     <div id="stats">
       <p>Healthy: {stats.healthy}</p>

@@ -26,7 +26,7 @@ class Person implements IPerson {
     this.speed = 1
     this.key = Person.count
     this.status = 'HEALTHY'
-    this.infected = null
+    this.infected = null // timestamp for infection or null
     Person.count++
     Person.window.height = height
     Person.window.width = width
@@ -37,7 +37,6 @@ class Person implements IPerson {
     this.x += this.vx * this.speed
     this.y += this.vy * this.speed
     this.checkBoundary()
-    this.checkStatus()
   }
 
   infection() {
@@ -47,7 +46,6 @@ class Person implements IPerson {
   }
 
   checkStatus() {
-    // console.log(Person.members)
     if (this.infected) {
       const now = new Date().getTime()
       let timeDifference = now - this.infected

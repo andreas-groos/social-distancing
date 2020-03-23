@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState, ReactElement } from 'react'
 import StatsComponent from './Stats'
+import Buttons from './Buttons'
 import { select } from 'd3'
 import { processCollisions } from './utils';
 import Person from './Person'
-import { Selection } from 'd3'
 import { Dimensions, Stats } from './types'
 
 const INTERVAL = 10;
@@ -17,6 +17,8 @@ export default function Container({ }: Props): ReactElement {
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 })
   const [healthStats, setHealthStats] = useState<Stats>({ healthy: 0, sick: 0, recovered: 0 })
   const [persons, setPersons] = useState<Person[] | []>([])
+  const [id, setId] = useState<any>()
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
     if (d3svg && d3svg.current) {
@@ -30,28 +32,53 @@ export default function Container({ }: Props): ReactElement {
         persons.push(new Person(width, height))
       }
       persons[0].infection()
-      // setPersons(p)
       persons.forEach(p => {
         svg.append('circle').attr('cx', p.x).attr('cy', p.y).attr('r', p.r).attr('fill', p.getColor()).attr('id', `p-${p.key}`)
       })
-      setInterval(() => {
-        persons.forEach(p => {
+      setPersons(persons)
+    }
+  }, []);
+
+  useEffect(() => {
+    if (id) {
+      clearInterval(id)
+    }
+    if (d3svg && d3svg.current) {
+      const { height, width } = d3svg.current.getBoundingClientRect()
+      const COUNT = Math.floor(height * width / 3000)
+      setCount(COUNT)
+      let inter = setInterval(() => {
+        persons.forEach((p) => {
           p.move()
           const a = select(`#p-${p.key}`)
           a.attr('cx', p.x).attr('cy', p.y).attr('fill', p.getColor())
+          p.checkStatus()
         })
-
-        for (let i = 0; i < COUNT; i++) {
-          for (let j = 0; j < COUNT; j++) {
-            processCollisions(persons[i], persons[j])
+        for (let k = 0; k <= count; k++) {
+          for (let j = 0; j <= count; j++) {
+            processCollisions(persons[k], persons[j])
           }
         }
-        setPersons(persons)
         const stats = Person.getStats()
         setHealthStats(stats)
       }, INTERVAL)
+      setId(inter)
     }
-  }, []);
+  }, [persons])
+
+  const handleClick = (value: number): void => {
+    let i = 0;
+    const cloned = [...persons]
+    while (i <= count) {
+      if (Math.random() * 100 >= value) {
+        cloned[i].speed = 0
+      } else {
+        cloned[i].speed = 1
+      }
+      i++
+    }
+    setPersons(cloned)
+  }
 
   return (
     <div className="container">
@@ -63,6 +90,7 @@ export default function Container({ }: Props): ReactElement {
         ref={d3svg}
       ></svg>
       <StatsComponent stats={healthStats} />
+      <Buttons handleClick={handleClick} />
     </div >
   )
 }

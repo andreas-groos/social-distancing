@@ -51,20 +51,24 @@ export function checkCollision(person1: IPerson, person2: IPerson): boolean {
 export function processCollisions(person1: IPerson, person2: IPerson) {
   if (person2.key <= person1.key) return;
   if (checkCollision(person1, person2)) {
-    const interX =
-      (person1.x * person2.r + person2.x * person1.r) / (person1.r + person2.r);
-    const interY =
-      (person1.y * person2.r + person2.y * person1.r) / (person1.r + person2.r);
+    // const interX =
+    //   (person1.x * person2.r + person2.x * person1.r) / (person1.r + person2.r);
+    // const interY =
+    //   (person1.y * person2.r + person2.y * person1.r) / (person1.r + person2.r);
     // % 1 prevents speeding up keeping the vector < 1
     const vx1 = (person1.vx + (2 * person2.vx)) % 1
     const vy1 = (person1.vy + (2 * person2.vy)) % 1
     const vx2 = (person2.vx + (2 * person1.vx)) % 1
     const vy2 = (person2.vy + (2 * person1.vy)) % 1
     // Move circles apart so there is no entanglement
-    person1.x += vx1;
-    person1.y += vy1;
-    person2.x += vx2;
-    person2.y += vy2;
+    if (person1.speed !== 0) {
+      person1.x += vx1;
+      person1.y += vy1;
+    }
+    if (person2.speed !== 0) {
+      person2.x += vx2;
+      person2.y += vy2;
+    }
     // Set new vectors
     person1.vx = vx1
     person1.vy = vy1

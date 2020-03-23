@@ -16,7 +16,7 @@ export interface IPerson {
   status: Status
   infected: number | null
   infection(): void
-  move(): void
+  move(percentage: number): void
   checkStatus(): void
 }
 
