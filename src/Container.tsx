@@ -50,7 +50,8 @@ export default function Container({ }: Props): ReactElement {
     }
     if (d3svg && d3svg.current) {
       const { height, width } = d3svg.current.getBoundingClientRect()
-      const COUNT = Math.floor(height * width / 80000)
+      const COUNT = Math.floor(height * width / 3000)
+      console.log('count', count)
       setCount(COUNT)
       let inter = setInterval(() => {
         persons.forEach((p) => {
