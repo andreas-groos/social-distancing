@@ -50,7 +50,7 @@ export default function Container({ }: Props): ReactElement {
     }
     if (d3svg && d3svg.current) {
       const { height, width } = d3svg.current.getBoundingClientRect()
-      const COUNT = Math.floor(height * width / 3000)
+      const COUNT = Math.floor(height * width / 80000)
       setCount(COUNT)
       let inter = setInterval(() => {
         persons.forEach((p) => {
@@ -71,6 +71,11 @@ export default function Container({ }: Props): ReactElement {
         Person.history.push(stats)
       }, INTERVAL)
       setId(inter)
+    }
+    return () => {
+      if (id) {
+        clearInterval(id)
+      }
     }
   }, [persons, itsOver])
 
