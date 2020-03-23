@@ -18,6 +18,7 @@ export interface IPerson {
   infection(): void
   move(percentage: number): void
   checkStatus(): void
+  draw(): void
 }
 
 export interface Stats {

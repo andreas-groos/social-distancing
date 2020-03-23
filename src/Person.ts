@@ -1,5 +1,6 @@
 import { Status, Dimensions, IPerson, Stats } from './types'
 import { getRandomPosition } from './utils';
+import { select } from 'd3'
 
 const RADIUS = 10
 const HEALING_TIME = 5 * 1000;
@@ -8,6 +9,7 @@ class Person implements IPerson {
   static count = 0
   static window: Dimensions = { height: 0, width: 0 }
   static members: Status[] = []
+  static history: Stats[] = []
   x: number
   y: number
   r: number
@@ -37,6 +39,11 @@ class Person implements IPerson {
     this.x += this.vx * this.speed
     this.y += this.vy * this.speed
     this.checkBoundary()
+  }
+
+  draw() {
+    const el = select(`#p-${this.key}`)
+    el.attr('cx', this.x).attr('cy', this.y).attr('fill', this.getColor())
   }
 
   infection() {

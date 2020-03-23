@@ -19,6 +19,7 @@ export default function Container({ }: Props): ReactElement {
   const [persons, setPersons] = useState<Person[] | []>([])
   const [id, setId] = useState<any>()
   const [count, setCount] = useState(0)
+  const [itsOver, setItsOver] = useState(false)
 
   useEffect(() => {
     if (d3svg && d3svg.current) {
@@ -43,6 +44,10 @@ export default function Container({ }: Props): ReactElement {
     if (id) {
       clearInterval(id)
     }
+    if (itsOver) {
+      console.log('done', Person.history)
+      return
+    }
     if (d3svg && d3svg.current) {
       const { height, width } = d3svg.current.getBoundingClientRect()
       const COUNT = Math.floor(height * width / 3000)
@@ -50,8 +55,7 @@ export default function Container({ }: Props): ReactElement {
       let inter = setInterval(() => {
         persons.forEach((p) => {
           p.move()
-          const a = select(`#p-${p.key}`)
-          a.attr('cx', p.x).attr('cy', p.y).attr('fill', p.getColor())
+          p.draw()
           p.checkStatus()
         })
         for (let k = 0; k <= count; k++) {
@@ -60,11 +64,15 @@ export default function Container({ }: Props): ReactElement {
           }
         }
         const stats = Person.getStats()
+        if (stats.sick === 0) {
+          setItsOver(true)
+        }
         setHealthStats(stats)
+        Person.history.push(stats)
       }, INTERVAL)
       setId(inter)
     }
-  }, [persons])
+  }, [persons, itsOver])
 
   const handleClick = (value: number): void => {
     let i = 0;
@@ -79,6 +87,7 @@ export default function Container({ }: Props): ReactElement {
     }
     setPersons(cloned)
   }
+
 
   return (
     <div className="container">
