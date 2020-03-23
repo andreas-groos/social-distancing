@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, ReactElement } from 'react'
 import StatsComponent from './Stats'
+import Graph from './Graph'
 import Buttons from './Buttons'
 import { select } from 'd3'
 import { processCollisions } from './utils';
@@ -45,7 +46,6 @@ export default function Container({ }: Props): ReactElement {
       clearInterval(id)
     }
     if (itsOver) {
-      console.log('done', Person.history)
       return
     }
     if (d3svg && d3svg.current) {
@@ -88,6 +88,10 @@ export default function Container({ }: Props): ReactElement {
     setPersons(cloned)
   }
 
+  if (itsOver) {
+    return <Graph history={Person.history} />
+
+  }
 
   return (
     <div className="container">
