@@ -63,7 +63,7 @@ class Person implements IPerson {
         if (this.incubation_time && this.incubation_time <= now) {
             this.incubation_time = null;
             this.status = 'SICK';
-            this.speed = 0.5;
+            this.speed /= 2;
             Person.members[this.key] = this.status;
         } else if (this.recovery_time && this.recovery_time <= now) {
             this.status = Math.random() < 0.02 ?  'DECEASED' : 'RECOVERED';
@@ -71,7 +71,7 @@ class Person implements IPerson {
             if (this.status === 'DECEASED') {
                 this.speed = 0;
             } else {
-                this.speed = 1;
+                this.speed *= 2;
             }
             Person.members[this.key] = this.status;
         }
