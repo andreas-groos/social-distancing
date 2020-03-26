@@ -84,7 +84,7 @@ export default function Container({ }: Props): ReactElement {
     let i = 0;
     const cloned = [...persons]
     while (i <= count) {
-      if (Math.random() * 100 >= value) {
+      if (cloned[i].status === 'DECEASED' || Math.random() * 100 >= value) {
         cloned[i].speed = 0
       } else {
         cloned[i].speed = 1
