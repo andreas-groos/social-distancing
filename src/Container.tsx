@@ -16,7 +16,7 @@ interface Props {
 export default function Container({ }: Props): ReactElement {
   const d3svg = useRef<SVGSVGElement>(null)
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 })
-  const [healthStats, setHealthStats] = useState<Stats>({ healthy: 0, sick: 0, recovered: 0 })
+  const [healthStats, setHealthStats] = useState<Stats>({ healthy: 0, incubating: 0, sick: 0, recovered: 0, deceased: 0 })
   const [persons, setPersons] = useState<Person[] | []>([])
   const [id, setId] = useState<any>()
   const [count, setCount] = useState(0)
@@ -26,7 +26,7 @@ export default function Container({ }: Props): ReactElement {
     if (d3svg && d3svg.current) {
       const { height, width } = d3svg.current.getBoundingClientRect()
       const COUNT = height * width / 3000
-      setHealthStats({ healthy: COUNT, sick: 0, recovered: 0 })
+      setHealthStats({ healthy: COUNT, incubating: 0, sick: 0, recovered: 0, deceased: 0 })
       setDimensions({ height, width })
       let svg = select(d3svg.current);
       const persons = [] as Person[]
@@ -59,13 +59,13 @@ export default function Container({ }: Props): ReactElement {
           p.draw()
           p.checkStatus()
         })
-        for (let k = 0; k <= count; k++) {
-          for (let j = 0; j <= count; j++) {
+        for (let k = 0; k < count - 1; k++) {
+          for (let j = k; j < count; j++) {
             processCollisions(persons[k], persons[j])
           }
         }
         const stats = Person.getStats()
-        if (stats.sick === 0) {
+        if ((stats.sick + stats.incubating) === 0) {
           setItsOver(true)
         }
         setHealthStats(stats)
