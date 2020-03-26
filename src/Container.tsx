@@ -65,11 +65,11 @@ export default function Container({ }: Props): ReactElement {
           }
         }
         const stats = Person.getStats()
+        setHealthStats(stats)
+        Person.history.push(stats)
         if ((stats.sick + stats.incubating) === 0) {
           setItsOver(true)
         }
-        setHealthStats(stats)
-        Person.history.push(stats)
       }, INTERVAL)
       setId(inter)
     }
