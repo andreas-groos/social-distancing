@@ -1,6 +1,7 @@
 import React, { useEffect, useState, ReactElement } from 'react'
 import { ResponsiveLine } from '@nivo/line'
 import { Stats } from './types'
+import StatsComponent from './Stats'
 
 
 interface GraphPoint {
@@ -38,6 +39,7 @@ export default function Graph({ history }: Props): ReactElement {
 
   return (
     <div id="graph">
+      <StatsComponent stats={history[history.length - 1]} />
       <ResponsiveLine data={data} curve="monotoneX" enableArea areaOpacity={0.2} pointSize={0} enableGridX={false} enableGridY={false} colors={{ datum: 'color' }} />
     </div>
   )
